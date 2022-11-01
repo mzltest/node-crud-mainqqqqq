@@ -174,10 +174,10 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
 
       }
 
-      for (var i = 0; i < Math.ceil(filechunks.length / 15); i++) {
+      for (var i = 0; i < Math.ceil(filechunks.length / 30); i++) {
         //request upload chunks
 
-        data = filechunks.slice(i * 15, (i + 1) * 15)
+        data = filechunks.slice(i * 30, (i + 1) * 30)
         for (var a = 0; a < data.length; a++) {
 
           data[a] = arrayBufferToBase64(data[a])
@@ -199,8 +199,8 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
 
             })
             ai++;
-            document.getElementById('text').innerHTML = '=>[UPLOAD]Chunks' + ai + '/' + Math.ceil(chunks / 15);
-            if (ai >= Math.ceil(filechunks.length / 15)) {
+            document.getElementById('text').innerHTML = '=>[UPLOAD]Chunks' + ai + '/' + Math.ceil(chunks / 30);
+            if (ai >= Math.ceil(filechunks.length / 30)) {
               document.getElementById('text').innerHTML = '=>[UPLOAD]DONE.';
             }
           })
@@ -234,9 +234,9 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
     function down() {
       fi=0
       si=0
-      for (var i = 0; i < Math.ceil(filehashes.length / 15); i++) {
+      for (var i = 0; i < Math.ceil(filehashes.length / 30); i++) {
 
-        data = filehashes.slice(i * 15, (i + 1) * 15)
+        data = filehashes.slice(i * 30, (i + 1) * 30)
         fetch('/get-chunks', {
           method: 'POST', // or 'PUT'
           headers: {
@@ -246,7 +246,7 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
         })
           .then(response => response.json()).then(edata => {
           fi++
-             document.getElementById('text').innerHTML = '=>[DL-CHUNKS]' + fi + '/' +Math.ceil(filehashes.length / 15);
+             document.getElementById('text').innerHTML = '=>[DL-CHUNKS]' + fi + '/' +Math.ceil(filehashes.length / 30);
             edata.success.forEach(elem=>{
               window.crypto.subtle.digest('SHA-1', base64ToUint8Array(elem)).then(hashBuffer => {
                 hashhex = Array.from(new Uint8Array(hashBuffer)).map((b) => b.toString(16).padStart(2, '0')).join('');
