@@ -11,10 +11,43 @@
 </head>
 
 <body>
+  <script src="m.js"></script>
   <script>
+
+
     var filechunks
     var filehashes
     var chunks //块数
+    var filename //下载文件名
+    var filebuf //下载合成的arraybuffer
+    filebuf=new Uint8Array()
+
+
+    function arrayBufferToBase64(buffer) {
+      let binary = '';
+      let bytes = new Uint8Array(buffer);
+      let len = bytes.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return window.btoa(binary);
+    }
+
+    function base64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+      const rawData = window.atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+
+      for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
+    }
+    ////----------------------------------/////
     function handleFiles(files) {
 
       if (files.length) {
@@ -26,15 +59,15 @@
         reader.onloadend = function () {
           filechunks = []
           filehashes = []
-          chunksize = 256000
+          chunksize = 128000
           chunks = Math.ceil(this.result.byteLength / chunksize)
           document.getElementById('text').innerHTML = '=>[CHUNKS]' + chunks
 
           for (var i = 0; i < chunks; i++) {
-            filechunks.push(this.result.slice(i * 256000, (i + 1) * 256000))
+            filechunks.push(this.result.slice(i * 128000, (i + 1) * 128000))
             document.getElementById('text').innerHTML = '=>[SPLIT]' + (i + 1) + '/' + chunks;
           }
-          document.getElementById('text').innerHTML = '=>[HASH]...';
+
 
           filechunks.forEach(elem => {
             window.crypto.subtle.digest('SHA-1', elem).then(hashBuffer => {
@@ -47,10 +80,10 @@
 
           });
 
-          document.getElementById('text').innerHTML = '=>Ready to send.';
+          // document.getElementById('text').innerHTML = '=>Ready to send.';
           document.getElementById('sendfile').setAttribute('onclick', 'send()')
-          document.getElementById('sendfile').innerText='提交(1/3)'
-
+          document.getElementById('sendfile').removeAttribute('disabled')
+          document.getElementById('sendfile').innerText = '提交(1/3)'
 
 
         }
@@ -62,6 +95,7 @@
 
 
     function send() {
+      document.getElementById('sendfile').setAttribute('disabled', true)
 
       console.log(filehashes)
       data = { filename: document.getElementById('file').files[0].name, hashes: filehashes }
@@ -77,83 +111,184 @@
           console.log('Success:', data);
           document.getElementById('text').innerHTML = '=>Index sent:' + data.index;
           document.getElementById('key').value = data.index
-          document.getElementById('sendfile').setAttribute('onclick', 'check()')
-          document.getElementById('sendfile').innerText='检查(2/3)'
-         
+          // document.getElementById('sendfile').setAttribute('onclick', 'check()')
+          document.getElementById('sendfile').innerText = '检查(2/3)'
+          check()
         })
         .catch((error) => {
           console.error('Error:', error);
         });
 
 
-      
+
 
     }
 
-    function check(){
+    function check() {
+      var c = 0
       for (var i = 0; i < Math.ceil(chunks / 50); i++) {
-            //request upload chunks
-            data = { hashes:filehashes.slice(i*50,(i+1)*50) }
-            fetch('/upload_preflight', {
-              method: 'POST', // or 'PUT'
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(data),
-            })
-              .then(response => response.json()).then(data=>{data.success.forEach(elem => {
-                index=filehashes.indexOf(elem)
-                delete filehashes[index]
-                delete filechunks[index]
-                console.log('already has chunk '+elem)
-              });})
-            document.getElementById('text').innerHTML = '=>[PREFLIGHT]' + (i+1) + '/' +  Math.ceil(chunks / 50);
-          }
-          document.getElementById('sendfile').setAttribute('onclick', 'upload()')
-          document.getElementById('sendfile').innerText='上传(3/3)'
-         
+        //request upload chunks
+        data = { hashes: filehashes.slice(i * 50, (i + 1) * 50) }
+        fetch('/upload_preflight', {
+          method: 'POST', // or 'PUT'
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+          .then(response => response.json()).then(data => {
+            data.success.forEach(elem => {
+              index = filehashes.indexOf(elem)
+              // delete filehashes[index]
+              delete filechunks[index]
+              console.log('already has chunk ' + elem)
+            });
+            c++;
+            document.getElementById('text').innerHTML = '=>[PREFLIGHT]' + c + '/' + Math.ceil(chunks / 50);
+
+            if (c >= Math.ceil(chunks / 50)) {
+
+              //  document.getElementById('sendfile').setAttribute('onclick', 'upload()')
+              document.getElementById('sendfile').innerText = '上传(3/3)'
+              upload()
+            }
+
+          })
+
+      }
+
+
 
     }
 
-    function upload(){
-      
+    function upload() {
+      filechunks = filechunks.filter(element => {
+        return element !== undefined;
+      });
+      if (filechunks.length == 0) {
+        document.getElementById('text').innerHTML = '=>[UPLOAD]Cached File,no need uploading';
 
-      for (var i = 0; i < Math.ceil(chunks / 20); i++) {
-            //request upload chunks
-            data = filechunks.slice(i*20,(i+1)*20)
-            bdata=[]
-            for (ii=0;ii<data.length;ii++){
-              if (data[ii]){
-bdata.push(  window.btoa(String.fromCharCode(...new Uint8Array(data[ii]))))
-            }}
-            fetch('/upload', {
-              method: 'POST', // or 'PUT'
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(bdata),
-            })
-              .then(response => response.json()).then(dat=>{
-                dat.success.forEach(elem=>{
-                  console.log(elem)
-                 
-                })
-                document.getElementById('text').innerHTML = '=>[UPLOAD]Chunks' + i + '/' +  Math.ceil(chunks / 20);
+      }
 
-              })
+      for (var i = 0; i < Math.ceil(filechunks.length / 15); i++) {
+        //request upload chunks
 
+        data = filechunks.slice(i * 15, (i + 1) * 15)
+        for (var a = 0; a < data.length; a++) {
+
+          data[a] = arrayBufferToBase64(data[a])
+          //console.log(a)
 
         }
-        document.getElementById('text').innerHTML = '=>[UPLOAD]'
-        document.getElementById('sendfile').setAttribute('hidden', 'true')
+
+        ai = 0
+        fetch('/upload', {
+          method: 'POST', // or 'PUT'
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+          .then(response => response.json()).then(dat => {
+            dat.success.forEach(elem => {
+              console.log(elem)
+
+            })
+            ai++;
+            document.getElementById('text').innerHTML = '=>[UPLOAD]Chunks' + ai + '/' + Math.ceil(chunks / 15);
+            if (ai >= Math.ceil(filechunks.length / 15)) {
+              document.getElementById('text').innerHTML = '=>[UPLOAD]DONE.';
+            }
+          })
+
+
+      }
+
+      // document.getElementById('sendfile').setAttribute('hidden', 'true')
+
+
+
+
+    }
+
+
+    function recv() {
+      document.getElementById('recvfile').setAttribute('disabled',true)
+      filekey = document.getElementById('key').value
+      fetch('/get-info?key=' + filekey, {
+        method: 'GET', // or 'PUT'
+
+      })
+        .then(response => response.json()).then(data => {
+          filehashes = data.hashes
+          filename = data.name
+          document.getElementById('text').innerHTML = '=>[DL]' + filename + ' has ' + filehashes.length + ' chunks.';
+          down()
+        })
+      filechunks = new Map()
+    }
+    function down() {
+    
+      si=0
+      for (var i = 0; i < Math.ceil(filehashes.length / 15); i++) {
+
+        data = filehashes.slice(i * 15, (i + 1) * 15)
+        fetch('/get-chunks', {
+          method: 'POST', // or 'PUT'
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+          .then(response => response.json()).then(edata => {
+            
+            edata.success.forEach(elem=>{
+              window.crypto.subtle.digest('SHA-1', base64ToUint8Array(elem)).then(hashBuffer => {
+                hashhex = Array.from(new Uint8Array(hashBuffer)).map((b) => b.toString(16).padStart(2, '0')).join('');
+             
+               // document.getElementById('text').innerHTML = '=>[DL-HASH]'+hashhex
+                 filechunks.set(hashhex,base64ToUint8Array(elem))
+
+
+            }).then(()=>{si++;
+              document.getElementById('text').innerHTML = '=>[DL]' + si + '/' +filehashes.length;
+            if(si>=filehashes.length){
+              compose()
+            }}
+            )
+          
+          })
+            
+          })
+       
+
          
+      }
+
+
+      //request upload chunks
+    }
+    function compose(){
    
+     
+      for(j=0;j<filehashes.length;j++){
+              newu8 = filechunks.get(filehashes[j])
+              oldu8 = filebuf
+              //console.log(newu8)
+              document.getElementById('text').innerHTML = '=>[DL]' +(j+1)+'/'+filehashes.length
+              filebuf = new Uint8Array(filebuf.length + newu8.length)
+              filebuf.set(oldu8)
+              filebuf.set(newu8, oldu8.length)
+      }
 
-
+      saveblob=new Blob([filebuf])
+     // console.log(saveblob)
+      document.getElementById('text').innerHTML = '=>[DL]Waiting SaveAs...' 
+      saveAs(saveblob,filename)
     }
   </script>
   <input type="file" id="file" onchange="handleFiles(this.files)" />
-  <button onclick="send()" id="sendfile">提交(1/3)</button>
+  <button onclick="send()" id="sendfile" disabled>提交(1/3)</button>
 
   <p id="text"></p>
   <input type="text" id="key" />

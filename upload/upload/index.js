@@ -5,20 +5,22 @@ let data = require('@begin/data')
 exports.handler = async function create(req) {
   let todo = arc.http.helpers.bodyParser(req)
   let successed=[]
-  todo.forEach(elem =>{
+  for(i=0;i<todo.length;i++)
+  {
+    elem=todo[i]
     let crypto = require('crypto');
 let hash = crypto.createHash('sha1');
     let filehash=hash.update(Buffer.from(elem,'base64')).digest('hex')
   
   
-      data.set({table:'chunks','key':filehash,'data':elem})
-    
+    res= await data.set({table:'indexes','key':filehash,'data':elem})
+
+    successed.push(res.key)
 
  
-    successed.push(filehash)
-
+    
   
-  })
+  }
  
   return {
   
