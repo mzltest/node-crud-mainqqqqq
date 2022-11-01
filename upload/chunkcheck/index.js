@@ -7,7 +7,7 @@ exports.handler = async function create(req) {
   for(i=0;i<todo.length;i++){
 elem=todo[i]
     res=await data.get({
-      table: 'indexes',
+      table: 'hashindexes',
       key: elem
     })
     if(res){
