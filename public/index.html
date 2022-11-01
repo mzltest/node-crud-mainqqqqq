@@ -111,6 +111,10 @@ window.onload=function (){ if(document.location.href.split("?").length>1){docume
           console.log('Success:', data);
           document.getElementById('text').innerHTML = '=>Index sent:' + data.index;
           document.getElementById('key').value = data.index
+
+var currenturl = window.location.href;
+var newUrl = (currenturl.split("?"))[0];
+history.pushState('','',newUrl+data.index);//前两个参数可省略
           // document.getElementById('sendfile').setAttribute('onclick', 'check()')
           document.getElementById('sendfile').innerText = '检查(2/3)'
           check()
