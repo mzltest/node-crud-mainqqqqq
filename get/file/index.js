@@ -17,8 +17,8 @@ for(i=0;i<todo.length;i++){
     
 successed+=(res.data)
 
-if(successed.length>4*1000*1000){
-  return {status:413,body:'file larger than 4*1000*1000 can not direct download'}
+if(successed.length>5800000){
+  return {status:413,body:'file larger than 5,800,000 bytes can not direct download'}
 }
 
     }
