@@ -290,6 +290,8 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
      // console.log(saveblob)
       document.getElementById('text').innerHTML = '=>[DL]Waiting SaveAs...' 
       saveAs(saveblob,filename)
+   document.getElementById('recvfile').removeAttribute('disabled')
+   
     }
   </script>
   <input type="file" id="file" onchange="handleFiles(this.files)" />
