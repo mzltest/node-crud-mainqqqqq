@@ -37,7 +37,7 @@
           document.getElementById('text').innerHTML = '=>[HASH]...';
 
           filechunks.forEach(elem => {
-            window.crypto.subtle.digest('SHA-256', elem).then(hashBuffer => {
+            window.crypto.subtle.digest('SHA-1', elem).then(hashBuffer => {
               hashhex = Array.from(new Uint8Array(hashBuffer)).map((b) => b.toString(16).padStart(2, '0')).join('');
               filehashes.push(hashhex);
 

@@ -1,20 +1,21 @@
 
 let data = require('@begin/data')
-
+successed=''
 exports.handler = async function create(req) {
+
   let filekey=req.queryStringParameters.key
   todo=await data.get({table:'indexes',key:filekey})
   fname=todo.name
   todo=todo.hashes
- 
-  let successed = ''
+
+  
   todo.forEach(elem=> {
+    
     data.get({
       table: 'chunks',
       key: elem
     }).then(chunk=>{
-      console.log(chunk)
-successed.concat(chunk.data)
+successed+=chunk.data
 if(successed.length>6*1000*1000){
   return {status:413,body:'file larger than 6*1000*1000 can not direct download'}
 }

@@ -7,17 +7,14 @@ exports.handler = async function create(req) {
   let successed=[]
   todo.forEach(elem =>{
     let crypto = require('crypto');
-let hash = crypto.createHash('sha256');
+let hash = crypto.createHash('sha1');
     let filehash=hash.update(Buffer.from(elem,'base64')).digest('hex')
   
-    data.get({table:'chunks','key':filehash}).then(data =>{if(data){
-      console.log('C=]'+filehash)}
-
-    else{
+  
       data.set({table:'chunks','key':filehash,'data':elem})
-      console.log('U=]'+filehash)
+    
 
-    }})
+ 
     successed.push(filehash)
 
   
