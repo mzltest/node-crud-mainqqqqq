@@ -1,0 +1,64 @@
+{
+  "name": "begin-app",
+  "version": "0.0.0",
+  "description": "Begin basic CRUD app",
+  "arc": {
+    "app": "crud-app",
+    "http": [
+      {
+        "/init-upload": {
+          "method": "post",
+          "src": "/upload/init"
+        }
+      },
+      {
+        "/upload_preflight": {
+          "method": "post",
+          "src": "/upload/chunkcheck"
+        }
+      },
+      {
+        "/upload": {
+          "method": "post",
+          "src": "/upload/upload"
+        }
+      },
+      {
+        "/get-info": {
+          "method": "get",
+          "src": "/get/info"
+        }
+      },
+      {
+        "/get-chunks": {
+          "method": "post",
+          "src": "/get/chunks"
+        }
+      },
+      {
+        "/get-file": {
+          "method": "get",
+          "src": "/get/file"
+        }
+      }
+    ],
+    "tables": [
+      {
+        "data": {
+          "scopeID": "*String",
+          "dataID": "**String",
+          "ttl": "TTL"
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "start": "npx sandbox"
+  },
+  "dependencies": {
+    "@architect/functions": "^4.0.0",
+    "@architect/sandbox": "^4.5.2",
+    "@begin/data": "^3.0.0",
+    "tiny-json-http": "^7.3.0"
+  }
+}
