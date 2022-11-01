@@ -14,7 +14,7 @@ let hash = crypto.createHash('sha1');
   
   
     res= await data.set({table:'indexes','key':filehash,'data':elem})
-
+await data.set({table:'hashindexes','key':filehash})
     successed.push(res.key)
 
  
