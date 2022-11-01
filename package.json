@@ -4,6 +4,7 @@
   "description": "Begin basic CRUD app",
   "arc": {
     "app": "crud-app",
+    "aws":{"timeout":300},
     "http": [
       {
         "/init-upload": {
