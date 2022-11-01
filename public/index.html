@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="Generator" content="EditPlus®">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
   <meta name="Author" content="">
   <meta name="Keywords" content="">
   <meta name="Description" content="">
@@ -228,7 +228,7 @@
       filechunks = new Map()
     }
     function down() {
-    
+      fi=0
       si=0
       for (var i = 0; i < Math.ceil(filehashes.length / 15); i++) {
 
@@ -241,7 +241,8 @@
           body: JSON.stringify(data),
         })
           .then(response => response.json()).then(edata => {
-            
+          fi++
+             document.getElementById('text').innerHTML = '=>[DL-CHUNKS]' + fi + '/' +Math.ceil(filehashes.length / 15);
             edata.success.forEach(elem=>{
               window.crypto.subtle.digest('SHA-1', base64ToUint8Array(elem)).then(hashBuffer => {
                 hashhex = Array.from(new Uint8Array(hashBuffer)).map((b) => b.toString(16).padStart(2, '0')).join('');
@@ -251,7 +252,7 @@
 
 
             }).then(()=>{si++;
-              document.getElementById('text').innerHTML = '=>[DL]' + si + '/' +filehashes.length;
+              document.getElementById('text').innerHTML = '=>[DL-HASH]' + si + '/' +filehashes.length;
             if(si>=filehashes.length){
               compose()
             }}
@@ -275,7 +276,7 @@
               newu8 = filechunks.get(filehashes[j])
               oldu8 = filebuf
               //console.log(newu8)
-              document.getElementById('text').innerHTML = '=>[DL]' +(j+1)+'/'+filehashes.length
+              document.getElementById('text').innerHTML = '=>[DL-COMP]' +(j+1)+'/'+filehashes.length
               filebuf = new Uint8Array(filebuf.length + newu8.length)
               filebuf.set(oldu8)
               filebuf.set(newu8, oldu8.length)
