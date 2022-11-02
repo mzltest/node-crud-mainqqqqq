@@ -291,16 +291,19 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
    
      
       for(j=0;j<filehashes.length;j++){
-              newu8 = filechunks.get(filehashes[j])
-              oldu8 = filebuf
-              //console.log(newu8)
-              document.getElementById('text').innerHTML = '=>[DL-COMP]' +(j+1)+'/'+filehashes.length
+              var newu8 = filechunks.get(filehashes[j])
+              var oldu8 = filebuf
+              
               filebuf = new Uint8Array(filebuf.length + newu8.length)
               filebuf.set(oldu8)
               filebuf.set(newu8, oldu8.length)
+              document.getElementById('text').innerHTML = '=>[DL-COMP]' +(j+1)+'/'+filehashes.length
+
+              
       }
 
       saveblob=new Blob([filebuf])
+      filebuf=undefined
      // console.log(saveblob)
       document.getElementById('text').innerHTML = '=>[DL]Waiting SaveAs...' 
       saveAs(saveblob,filename)
