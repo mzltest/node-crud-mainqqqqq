@@ -10,9 +10,9 @@ function ranstr(length) {
  }
 exports.handler = async function create(req) {
     let filekey=req.pathParameters.key
-  pendingkey=ranstr(4)
+  pendingkey=ranstr(3)
   while ((await data.get({  table: 'surls',key:pendingkey}))){
-    pendingkey=ranstr(4)
+    pendingkey=ranstr(3)
   }
 
   indexinfo = await data.set({
