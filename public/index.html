@@ -272,7 +272,12 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
             }).then(()=>{si++;
               document.getElementById('text').innerHTML = '=>[DL-HASH]' + si + '/' +filehashes.length;
             if(si>=filehashes.length){
-              compose()
+              window.w = new Worker('worker.js')
+              document.getElementById('text').innerHTML = '=>Worker正在拼接...';
+              window.w.postMessage([filehashes,filebuf,filechunks])
+    window.w.onmessage = ev => {
+      saveAs(ev.data,filename)
+    }
             }}
             )
           
