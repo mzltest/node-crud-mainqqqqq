@@ -188,10 +188,10 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
 
       }
 
-      for (var i = 0; i < Math.ceil(filechunks.length / (4)); i++) {
+      for (var i = 0; i < Math.ceil(filechunks.length / (10)); i++) {
         //request upload chunks
 
-        data = filechunks.slice(i * (4), (i + 1) * (4))
+        data = filechunks.slice(i * (10), (i + 1) * (10))
         for (var a = 0; a < data.length; a++) {
 
           data[a] = arrayBufferToBase64(data[a])
@@ -213,8 +213,8 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
 
             })
             ai++;
-            document.getElementById('text').innerHTML = '=>[UPLOAD]Chunks' + ai + '/' + Math.ceil(filechunks.length / (4));
-            if (ai >= Math.ceil(filechunks.length / (4))) {
+            document.getElementById('text').innerHTML = '=>[UPLOAD]Chunks' + ai + '/' + Math.ceil(filechunks.length / (10));
+            if (ai >= Math.ceil(filechunks.length / (10))) {
               document.getElementById('text').innerHTML = '=>[UPLOAD]DONE.<br>Short URL(24hr expiry): <b onclick="javascript:navigator.clipboard.writeText(surl)">'+surl+' (click to copy)</b><br>*key is perpetual and it is on the broswer url now.';
             }
           })
