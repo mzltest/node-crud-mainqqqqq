@@ -289,11 +289,11 @@ document.getElementById('text').innerHTML = '=>[DL-HASH]' + si + '/' +filehashes
 if (si >= filehashes.length) {
 fileStream = streamSaver.createWriteStream(filename)
         writer= fileStream.getWriter()
-      
+      document.getElementById('text').innerHTML = '=>[SAVE]下载完成前勿关闭或刷新页面,不建议离开页面'
+
  for(j=0;j<filehashes.length;j++){
                 var newu8 = filechunks.get(filehashes[j])
-      writer.write(newu8).then(
-document.getElementById('text').innerHTML = '=>[SAVE]勿关闭/刷新页面，目前进度:' + (j+1) + '/' +filehashes.length)
+      writer.write(newu8)
 
         }
 writer.close()
