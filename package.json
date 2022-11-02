@@ -35,12 +35,6 @@
           "method": "post",
           "src": "/get/chunks"
         }
-      },
-      {
-        "/get-file": {
-          "method": "get",
-          "src": "/get/file"
-        }
       }
     ],
     "tables": [
