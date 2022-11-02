@@ -35,6 +35,18 @@
           "method": "post",
           "src": "/get/chunks"
         }
+      },
+      {
+        "/surl/:key": {
+          "method": "get",
+          "src": "/shorturl/shrink"
+        }
+      },
+      {
+        "/s/:code": {
+          "method": "get",
+          "src": "/shorturl/expand"
+        }
       }
     ],
     "tables": [
