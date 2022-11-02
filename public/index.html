@@ -301,9 +301,10 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
 
               
       }
-
+      filechunks=undefined
       var saveblob=new Blob([filebuf])
       filebuf=undefined
+     
      // console.log(saveblob)
       document.getElementById('text').innerHTML = '=>[DL]Waiting SaveAs...' 
       saveAs(saveblob,filename)
