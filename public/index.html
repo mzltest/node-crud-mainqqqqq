@@ -311,7 +311,7 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
   <input type="file" id="file" onchange="handleFiles(this.files)" />
   <button onclick="send()" id="sendfile" disabled>提交(1/3)</button>
 
-  <p id="text"></p>
+  <p id="text">注：理论最大文件大小约在512MB，但实际上只测试过30MB左右的文件，基本超出限制控制台会报错。另外文件越大越容易500（数据库那边的性能限制），遇到这种情况可刷新重传，会自动跳过已经上传的部分。</p>
   <input type="text" id="key" />
   <button onclick="recv()" id="recvfile">下载</button>
 </body>
