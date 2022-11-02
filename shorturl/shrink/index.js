@@ -22,8 +22,7 @@ exports.handler = async function create(req) {
     ttl: (Date.now() / 1000) + (60 * 60 * 24 * 1)
   })
   return {
-    
-  html: "<script>document.write(window.document.domain+'/s/"+indexinfo.key+"')</script>"
+    code:indexinfo.key
     
   }
 }

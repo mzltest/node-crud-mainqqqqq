@@ -20,6 +20,8 @@
     var chunks //块数
     var filename //下载文件名
     var filebuf //下载合成的arraybuffer
+    var surl //短链接显示区域
+    surl=window.document.domain
     filebuf=new Uint8Array()
 window.onload=function (){ if(document.location.href.split("?").length>1){document.getElementById('key').value = document.location.href.split("?")[1];recv()}}
 
@@ -118,7 +120,19 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
           // document.getElementById('sendfile').setAttribute('onclick', 'check()')
           document.getElementById('sendfile').innerText = '检查(2/3)'
           check()
-        })
+        }).then(()=>
+          {
+            fetch('/surl/' +  document.getElementById('key').value, {
+        method: 'GET', // or 'PUT'
+
+      })
+        .then(response => response.json()).then(data=>{surl+='/s/'+data.code}
+
+        
+        )
+
+          }
+        )
         .catch((error) => {
           console.error('Error:', error);
         });
@@ -170,7 +184,7 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
         return element !== undefined;
       });
       if (filechunks.length == 0) {
-        document.getElementById('text').innerHTML = '=>[UPLOAD]Cached File,no need uploading';
+        document.getElementById('text').innerHTML = '=>[UPLOAD]Cached File,no need uploading.<br>Short URL(24hr expiry): <b onclick="javascript:navigator.clipboard.writeText(surl)">'+surl+' (click to copy)</b><br>*key is perpetual and it is on the browser url now.';
 
       }
 
@@ -201,7 +215,7 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
             ai++;
             document.getElementById('text').innerHTML = '=>[UPLOAD]Chunks' + ai + '/' + Math.ceil(chunks / 30);
             if (ai >= Math.ceil(filechunks.length / 30)) {
-              document.getElementById('text').innerHTML = '=>[UPLOAD]DONE.';
+              document.getElementById('text').innerHTML = '=>[UPLOAD]DONE.<br>Short URL(24hr expiry): <b onclick="javascript:navigator.clipboard.writeText(surl)">'+surl+' (click to copy)</b><br>*key is perpetual and it is on the broswer url now.';
             }
           })
 
