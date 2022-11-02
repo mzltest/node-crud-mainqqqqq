@@ -276,6 +276,7 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
               document.getElementById('text').innerHTML = '=>Worker正在拼接...';
               window.w.postMessage([filehashes,filebuf,filechunks])
     window.w.onmessage = ev => {
+      document.getElementById('text').innerHTML = '=>请等待SaveAs...';
       saveAs(ev.data,filename)
     }
             }}
