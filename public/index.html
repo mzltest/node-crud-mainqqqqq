@@ -302,7 +302,7 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
               
       }
 
-      saveblob=new Blob([filebuf])
+      var saveblob=new Blob([filebuf])
       filebuf=undefined
      // console.log(saveblob)
       document.getElementById('text').innerHTML = '=>[DL]Waiting SaveAs...' 
