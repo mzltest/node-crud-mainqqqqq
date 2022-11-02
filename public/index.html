@@ -288,14 +288,13 @@ si++;
 document.getElementById('text').innerHTML = '=>[DL-HASH]' + si + '/' +filehashes.length;
 if (si >= filehashes.length) {
 fileStream = streamSaver.createWriteStream(filename)
+        writer= fileStream.getWriter()
+      
  for(j=0;j<filehashes.length;j++){
                 var newu8 = filechunks.get(filehashes[j])
-               
-new Response(newu8).body
-      .pipeTo(fileStream)
-      
+      writer.write(newu8)
         }
-
+writer.close()
 }}
 )
 
