@@ -16,7 +16,6 @@ for(i=0;i<todo.length;i++){
     })
     
 successed=successed.concat(res.data)
-console.log(successed.length)
 if(successed.length>5800000){
   return {status:413,body:'file larger than 5,800,000 bytes can not direct download'}
 }
@@ -24,6 +23,7 @@ if(successed.length>5800000){
     }
 
  
+console.log(successed.length)
 
   return {
     statusCode:200,
