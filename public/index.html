@@ -293,6 +293,8 @@ fileStream = streamSaver.createWriteStream(filename)
  for(j=0;j<filehashes.length;j++){
                 var newu8 = filechunks.get(filehashes[j])
       writer.write(newu8)
+document.getElementById('text').innerHTML = '=>[SAVE]勿关闭/刷新页面，目前进度:' + (j+1) + '/' +filehashes.length;
+
         }
 writer.close()
 }}
