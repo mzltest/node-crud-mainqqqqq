@@ -23,12 +23,12 @@ if(successed.length>5800000){
     }
 
  
-console.log(successed.length)
+
 
   return {
     statusCode:200,
     isBase64Encoded: true,
     headers:{'Content-Disposition':'attachment; filename="'+fname+'"'},
-    body:successed
+    body:successed.toString()
   }
 }
