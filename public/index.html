@@ -213,7 +213,7 @@ history.pushState('','',newUrl+'?'+data.index);//前两个参数可省略
 
             })
             ai++;
-            document.getElementById('text').innerHTML = '=>[UPLOAD]Chunks' + ai + '/' + Math.ceil(chunks / 30);
+            document.getElementById('text').innerHTML = '=>[UPLOAD]Chunks' + ai + '/' + Math.ceil(filechunks.length / 30);
             if (ai >= Math.ceil(filechunks.length / 30)) {
               document.getElementById('text').innerHTML = '=>[UPLOAD]DONE.<br>Short URL(24hr expiry): <b onclick="javascript:navigator.clipboard.writeText(surl)">'+surl+' (click to copy)</b><br>*key is perpetual and it is on the broswer url now.';
             }
