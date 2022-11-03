@@ -254,7 +254,7 @@ method: 'GET',
 .then(response => response.json()).then(data => {
 filehashes = data.hashes
 filename = data.name
-document.getElementById('text').innerHTML = '=>[DL]' + filename + ' has ' + filehashes.length + ' chunks.';
+document.getElementById('text').innerText = '=>[DL]' + filename + ' has ' + filehashes.length + ' chunks.';
 down()
 })
 filechunks = new Map()
