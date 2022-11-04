@@ -61,7 +61,7 @@ window.addEventListener('paste', e => {
   handleFiles(document.getElementById("file").files)
 });
 function handleFiles(files) {
-
+document.getElementById("qrcode")=""
 if (files.length) {
 let file = files[0];
 let reader = new FileReader();
