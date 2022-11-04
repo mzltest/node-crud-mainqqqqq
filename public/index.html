@@ -13,7 +13,7 @@
 <body>
 <script src="p.js"></script>
 <script src="s.js"></script>
-
+<script src="qr.js"></script>
 <script>
 
 
@@ -202,7 +202,8 @@ return element !== undefined;
 });
 if (filechunks.length == 0) {
 document.getElementById('text').innerHTML = '=>[UPLOAD]Cached File,no need uploading.<br>Short URL(24hr expiry): <b onclick="javascript:navigator.clipboard.writeText(surl)">'+surl+' (click to copy)</b><br>*key is perpetual and it is on the browser url now.';
-
+var qrc = new QRCode(document.getElementById("qrcode"), surl);
+   
 }
 
 for (var i = 0; i < Math.ceil(filechunks.length / (10)); i++) {
@@ -233,6 +234,8 @@ ai++;
 document.getElementById('text').innerHTML = '=>[UPLOAD]Chunks' + ai + '/' + Math.ceil(filechunks.length / (10));
 if (ai >= Math.ceil(filechunks.length / (10))) {
 document.getElementById('text').innerHTML = '=>[UPLOAD]DONE.<br>Short URL(24hr expiry): <b onclick="javascript:navigator.clipboard.writeText(surl)">'+surl+' (click to copy)</b><br>*key is perpetual and it is on the broswer url now.';
+var qrc = new QRCode(document.getElementById("qrcode"), surl);
+
 }
 })
 
@@ -324,6 +327,8 @@ writer.close()
 <p id="text">
 注：理论最大文件大小约在512MB，但实际上只测试过30MB左右的文件，基本超出限制控制台会报错。另外文件越大越容易500（数据库那边的性能限制），遇到这种情况可刷新重传，会自动跳过已经上传的部分。
 </p>
+<div id="qrcode"></div>
+<hr>
 <input type="text" id="key" />
 <button onclick="recv()" id="recvfile">下载</button>
 </body>
