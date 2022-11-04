@@ -54,6 +54,12 @@ outputArray[i] = rawData.charCodeAt(i);
 return outputArray;
 }
 ////----------------------------------/////
+  
+
+window.addEventListener('paste', e => {
+  document.getElementById("file").files = e.clipboardData.files;
+  handleFiles(document.getElementById("file").files)
+});
 function handleFiles(files) {
 
 if (files.length) {
