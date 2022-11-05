@@ -195,7 +195,7 @@ var newUrl = (currenturl.split("?"))[0];
 history.pushState('', '', newUrl + '?' + data.index); //前两个参数可省略
 // document.getElementById('sendfile').setAttribute('onclick', 'check()')
 document.getElementById('sendfile').innerText = '检查(2/3)'
-
+check()
 }).then(() => {
 fetch('/surl/' + document.getElementById('key').value, {
 method: 'GET', // or 'PUT'
@@ -203,13 +203,15 @@ method: 'GET', // or 'PUT'
 })
 .then(response => response.json()).then(data => {
 surl += '/s/' + data.code
+var qrc = new QRCode(document.getElementById("qrcode"), surl);
+alert (surl)
 }
 
 
 )
 
 }
-).then(check())
+)
 .catch((error) => {
 console.error('Error:', error);
 });
@@ -263,8 +265,7 @@ filechunks = filechunks.filter(element => {
 return element !== undefined;
 });
 if (filechunks.length == 0) {
-document.getElementById('text').innerHTML = '=>[UPLOAD]Cached File,no need uploading.<br>Short URL(24hr expiry): <b onclick="javascript:navigator.clipboard.writeText(surl)">' + surl + ' (click to copy)</b><br>*key is perpetual and it is on the browser url now.';
-var qrc = new QRCode(document.getElementById("qrcode"), surl);
+document.getElementById('text').innerHTML = '=>[UPLOAD]Cached File,no need uploading.*key is perpetual and it is on the browser url now.';
 
 }
 
@@ -295,8 +296,7 @@ console.log(elem)
 ai++;
 document.getElementById('text').innerHTML = '=>[UPLOAD]Chunks' + ai + '/' + Math.ceil(filechunks.length / (10));
 if (ai >= Math.ceil(filechunks.length / (10))) {
-document.getElementById('text').innerHTML = '=>[UPLOAD]DONE.<br>Short URL(24hr expiry): <b onclick="javascript:navigator.clipboard.writeText(surl)">' + surl + ' (click to copy)</b><br>*key is perpetual and it is on the broswer url now.';
-var qrc = new QRCode(document.getElementById("qrcode"), surl);
+document.getElementById('text').innerHTML = '=>[UPLOAD]DONE.*key is perpetual and it is on the broswer url now.';
 
 }
 })
