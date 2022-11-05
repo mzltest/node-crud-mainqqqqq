@@ -24,7 +24,7 @@ var chunks //块数
 var filename //下载文件名
 var filebuf //下载合成的arraybuffer
 var surl //短链接显示区域
-surl = 'https://' + window.document.domain
+
 filebuf = new Uint8Array()
 window.onload = function () {
 if (document.location.href.split("?").length > 1) {
@@ -64,6 +64,7 @@ document.getElementById("file").files = e.clipboardData.files;
 handleFiles(document.getElementById("file").files)
 });
 function handleFiles(files) {
+surl = 'https://' + window.document.domain
 document.getElementById("qrcode").innerHTML = ""
 if (files.length) {
 if (files.length > 1) {
@@ -204,7 +205,7 @@ method: 'GET', // or 'PUT'
 .then(response => response.json()).then(data => {
 surl += '/s/' + data.code
 var qrc = new QRCode(document.getElementById("qrcode"), surl);
-alert (surl)
+document.getElementById("qrcode").append('<br>'+surl)
 }
 
 
