@@ -317,6 +317,7 @@ function recv() {
 document.getElementById('recvfile').setAttribute('disabled',
 true)
 filekey = document.getElementById('key').value
+if(filekey.length<5){document.location='https://'+document.domain+'/s/'+filekey}
 fetch('/get-info?key=' + filekey,
 {
 method: 'GET',
