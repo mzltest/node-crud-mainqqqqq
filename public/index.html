@@ -126,7 +126,7 @@ document.getElementById('sendfile').innerText = '提交(1/3)'
 
 
 } else {
-filename = document.getElementById('file').files[0].name
+filename =files[0].name
 let file = files[0];
 let reader = new FileReader();
 reader.onprogress = function (a) {
