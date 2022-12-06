@@ -24,7 +24,7 @@ var chunks //块数
 var filename //下载文件名
 var filebuf //下载合成的arraybuffer
 var surl //短链接显示区域
-
+streamSaver.mitm = './mitm.html'
 filebuf = new Uint8Array()
 window.onload = function () {
 if (document.location.href.split("?").length > 1) {
