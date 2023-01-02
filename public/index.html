@@ -266,7 +266,7 @@ filechunks = filechunks.filter(element => {
 return element !== undefined;
 });
 if (filechunks.length == 0) {
-document.getElementById('text').innerHTML = '=>[UPLOAD]Cached File,no need uploading.*key is perpetual and it is on the browser url now.';
+document.getElementById('text').innerHTML = '=>[UPLOAD]Cached File,no need uploading.*key is 7d and it is on the browser url now.';
 
 }
 
@@ -297,7 +297,7 @@ console.log(elem)
 ai++;
 document.getElementById('text').innerHTML = '=>[UPLOAD]Chunks' + ai + '/' + Math.ceil(filechunks.length / (10));
 if (ai >= Math.ceil(filechunks.length / (10))) {
-document.getElementById('text').innerHTML = '=>[UPLOAD]DONE.*key is perpetual and it is on the broswer url now.';
+document.getElementById('text').innerHTML = '=>[UPLOAD]DONE.*key is 7d and it is on the broswer url now.';
 
 }
 })
@@ -391,7 +391,8 @@ document.getElementById('recvfile').removeAttribute('disabled')
 <br>
   <textarea id="filetext"></textarea><button onclick="handleFiles([new File([document.getElementById('filetext').value],'untitled.txt')])">或使用文本</button>
 <p id="text">
-注：理论最大文件大小约在512MB，但实际上只测试过30MB左右的文件，基本超出限制控制台会报错。另外文件越大越容易500（数据库那边的性能限制），遇到这种情况可刷新重传，会自动跳过已经上传的部分。
+注：理论最大文件大小约在512MB，但实际上只测试过30MB左右的文件，基本超出限制控制台会报错。另外文件越大越容易500（数据库那边的性能限制），遇到这种情况可刷新重传，会自动跳过已经上传的部分。<br>
+文件有效期短链接24小时，使用1次后过期；长链接14天；文件块保留30天。
 </p>
 <div id="qrcode"></div>
 <hr>
